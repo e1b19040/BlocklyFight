@@ -2,7 +2,6 @@
 phina.globalize();
 // アセット
 var ASSETS = {
-  // 画像
   image: {
     'tomapiko': 'https://cdn.jsdelivr.net/gh/phinajs/phina.js@develop/assets/images/tomapiko_ss.png',
   },
