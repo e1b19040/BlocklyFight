@@ -1,9 +1,15 @@
+
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Blocklyテスト</title>
+    <title>Blockly作成画面</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="${description}" />
   </head>
   <body>
+    <script src="https://cdn.jsdelivr.net/gh/phinajs/phina.js@v0.2.3/build/phina.js"></script>
     <!-- Blocklyのライブラリ -->
     <script src="blockly-master/blockly_compressed.js"></script>
     <script src="blockly-master/blocks_compressed.js"></script>
@@ -13,6 +19,7 @@
     <script src="myblock.js"></script>
     <!-- ワークスペースのエリア -->
     <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+    
     <button onclick="doCode()">コードの実行</button>
     <!-- ツールボックスの定義 -->
     <xml id="toolbox">
@@ -38,5 +45,8 @@
         }
       }
     </script>
+    <button onclick="location.href='Phina.html'">
+      移動
+    </button>
   </body>
 </html>
