@@ -35,7 +35,7 @@ phina.define("MainScene", {
    },
 });
 /*
- * メイン処理
+  メイン処理
  */
 phina.main(function() {
   var app = GameApp({
