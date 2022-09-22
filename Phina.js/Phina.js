@@ -32,7 +32,7 @@ phina.define("MainScene", {
   
   update: function() {
 
-  },
+   },
 });
 /*
  * メイン処理
