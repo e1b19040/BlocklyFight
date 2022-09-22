@@ -38,7 +38,7 @@ var ASSETS = {
 var SCREEN_WIDTH  = 640; 
 var SCREEN_HEIGHT = 960;
 
-phina.define('TitleScene', {
+phina.define('TitleScene',  {
   superClass: 'DisplayScene',
   // コンストラクタ
   init: function() {
