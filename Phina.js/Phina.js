@@ -1,9 +1,11 @@
 
+
 phina.globalize();
 
 /*
  * メインシーン
  */
+
 phina.define("MainScene", {
   superClass: 'DisplayScene', 
   init: function() {
@@ -16,8 +18,8 @@ phina.define("MainScene", {
     }).addChildTo(this)
     .setPosition(this.gridX.center(),this.gridY.center())
     .onpush = function(){
-      //ブロックからプログラム（文字列）を作成
-      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      
+      sessionStorage.getItem('block');
       //プログラムを実行
       try{
         eval(code);
@@ -32,10 +34,10 @@ phina.define("MainScene", {
   
   update: function() {
 
-  },
+   },
 });
 /*
- * メイン処理
+  メイン処理
  */
 phina.main(function() {
   var app = GameApp({

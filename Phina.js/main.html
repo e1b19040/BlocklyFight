@@ -1,52 +1,229 @@
+<head>
+  <title>Blockly作成画面</title>
+</head>
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Blockly作成画面</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="description" content="${description}" />
-  </head>
-  <body>
-    <script src="https://cdn.jsdelivr.net/gh/phinajs/phina.js@v0.2.3/build/phina.js"></script>
-    <!-- Blocklyのライブラリ -->
-    <script src="blockly-master/blockly_compressed.js"></script>
-    <script src="blockly-master/blocks_compressed.js"></script>
-    <script src="blockly-master/javascript_compressed.js"></script>
-    <script src="blockly-master/msg/js/ja.js"></script>
-    <!-- 自作ブロックの定義 -->
-    <script src="myblock.js"></script>
-    <!-- ワークスペースのエリア -->
-    <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+<script src="https://cdn.jsdelivr.net/gh/phinajs/phina.js@v0.2.3/build/phina.js"></script>
+<script src="blockly-master/blockly_compressed.js"></script>
+<script src="blockly-master/blocks_compressed.js"></script>
+<script src="blockly-master/javascript_compressed.js"></script>
+<script src="blockly-master/msg/js/ja.js"></script>
+<script src="myblock.js"></script>
+<script src="phina.js-develop/"></script>
+
+
+<div id="contents" style="float:left">
+  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+  <canvas id="phinaDiv" style="height:  600px; width: 480px;"></canvas>
+</div>
+<button onclick="doCode()">コードの実行</button>
+
+<xml id="toolbox">
+  <block type="go_left"></block>
+  <block type="go_right"></block>
+  <block type="go_up"></block>
+  <block type="go_down"></block>
+</xml>
+
+<script>
+  var workspace = Blockly.inject('blocklyDiv',
+      {toolbox: document.getElementById('toolbox')});
+
+  function doCode(){
+    console.log(Blockly.JavaScript.workspaceToCode(workspace)); 
+    var code = Blockly.JavaScript.workspaceToCode(workspace);
+    try{
+      eval(code);
+    }
+    catch(e){
+      alert(e);
+    }
     
-    <button onclick="doCode()">コードの実行</button>
-    <!-- ツールボックスの定義 -->
-    <xml id="toolbox">
-      <block type="go_left"></block>
-      <block type="go_right"></block>
-      <block type="go_up"></block>
-      <block type="go_down"></block>
-    </xml>
-    <script>
-      //Blocklyをdivにはめ込み
-      var workspace = Blockly.inject('blocklyDiv',
-          {toolbox: document.getElementById('toolbox')});
+  }
+</script>
+<!--<button onclick="location.href='Phina.html'">
+  移動
+</button>-->
 
-      function doCode(){
-        //ブロックからプログラム（文字列）を作成
-        var code = Blockly.JavaScript.workspaceToCode(workspace);
-        //プログラムを実行
-        try{
-          eval(code);
+
+<script>
+phina.globalize();
+
+var SCREEN_X = 1200;
+var SCREEN_Y = 1200;
+
+var ASSETS = {
+    image: {
+        'tomapiko': 'http://cdn.rawgit.com/phi-jp/phina.js/v0.1.1/assets/images/tomapiko.png',
+    },
+};
+
+const BLOCK_SIZE = 64;
+
+phina.define('Block', {
+    superClass: 'RectangleShape',
+
+    init: function() {
+        this.superInit({
+            width: BLOCK_SIZE,
+            height: BLOCK_SIZE,
+            fill: 'hsl(100, 80%, 60%)',
+            stroke: null,
+            cornerRadius: 8,
+        });
+    },
+});
+
+phina.define('Player',{
+    superClass: 'RectangleShape',
+    init: function() {
+        this.superInit({
+            width: 80,
+            height: 100,
+            fill: 'rgba(0, 0, 0,0)',
+            stroke: null,
+            cornerRadius: 0,
+        });
+        this.gazo = Sprite('tomapiko').addChildTo(this);
+        this.gazo.width = this.gazo.height = 128;
+    }
+});
+
+phina.define('BlockManager',{
+    superClass: 'DisplayElement',
+    init: function(){
+        this.superInit();
+        this._totalx = 0;
+    },
+    _accessor:{
+        totalx:{
+            get:function(){
+                return this._totalx;
+            },
+            set:function(v){
+                this._totalx = v;
+                var po = this._totalx;
+                this.children.forEach(function(block,index){
+                    block.x = block.x + po;
+                });
+
+            }
         }
-        catch(e){
-          alert(e);
+    }
+});
+
+
+phina.define('MainScene', {
+    superClass: 'DisplayScene',
+    init: function() {
+        this.superInit();
+        this.backgroundColor = 'black';
+        
+        this.group = BlockManager().addChildTo(this);
+        //console.log(this.group.totalx);
+        var block = Block().addChildTo(this.group);
+        var shape = Shape({width: 650,height: 10,})
+        .setPosition(this.gridX.center(),0)
+        .addChildTo(this);
+        shape.backgroundColor =`rgb(92,58,0)`
+        block.setPosition(400,700);
+        Block().addChildTo(this.group).setPosition(200,200);
+        
+        var tomapiko = Player().addChildTo(this);
+        
+        var day = new Date();
+        this.random = Random(day.getTime());
+        var rand = this.random;
+        var star = StarShape().addChildTo(this).setPosition(rand.randint(50,this.width - 50),rand.randint(50,this.height - 150));
+        this.star = star;
+        
+        tomapiko.setPosition(400,400);
+        this.player = tomapiko;
+        this.player.pastVector = {x:0,y:0.0};
+        this.score = 0;
+    },
+    
+    update: function(app) {
+        var keyboard = app.keyboard;
+        
+        var gravity = 3.0;
+        var vector = this.player.pastVector;
+        var groundPos = 100;
+        vector.y += 9.8;
+
+        var jump = false;
+
+        if(app.frame % 5 === 0) {
+            eval(Blockly.JavaScript.workspaceToCode(workspace));
         }
-      }
-    </script>
-    <button onclick="location.href='Phina.html'">
-      移動
-    </button>
-  </body>
-</html>
+
+
+        if(keyboard.getKey('left')){
+            vector.x -= 8;
+        }
+        if(keyboard.getKey('right')){
+            vector.x += 8;
+        }
+        if(keyboard.getKeyDown('up') || jump === true){
+            vector.y = -100;
+        }
+        if(keyboard.getKey('down')){
+            vector.y += 8;
+        }
+        
+        var pos = this.player.position;
+        var group = this.group;
+        
+        vector.x /= 1.3;
+
+        var totalmove = false;
+        if(pos.x + vector.x < 100) {
+            totalmove = true;
+        }
+        else if(pos.x + vector.x > this.width - 100){
+            totalmove = true;
+        }
+        
+        if(pos.y + vector.y > this.height - groundPos) {
+            vector.y = this.height - groundPos - pos.y;
+        }
+        
+        this.player.moveBy(0,vector.y);
+        if(totalmove === true){
+            this.group.totalx = -vector.x;
+        }else {
+            this.player.moveBy(vector.x,0);
+        }
+        var player = this.player;
+        this.group.children.some(function(block){
+            let flg = false;
+            while(player.hitTestElement(block)){
+                flg = true;
+                player.moveBy(0,-0.01 * vector.y);
+            }
+            if(flg){
+                vector.y = 0;
+            }
+        });
+        this.player.pastVector = vector;
+        if(this.player.hitTestElement(this.star)){
+            this.star.setPosition(this.random.randint(50,this.width - 50),this.random.randint(50,this.height - 150));
+            this.score += 1;
+            this.label = "score is: " + this.score + "\n";
+        }
+        
+    }
+});
+
+// メイン処理
+phina.main(function() {
+    // アプリケーション生成
+    var app = GameApp({
+        startLabel: 'main', // メインシーンから開始する
+        assets: ASSETS,
+        domElement: document.getElementById("phinaDiv")
+    });
+    app.run();
+});
+
+</script>
+
