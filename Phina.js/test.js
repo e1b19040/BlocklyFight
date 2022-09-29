@@ -27,7 +27,9 @@ phina.main(function() {
   // アプリケーションを生成
   var app = GameApp({
     // MainScene から開始
-    startLabel: 'main'
+    query: '#mycanvas',
+    startLabel: 'main',
+    fit: false,
   });
   // fps表示
   //app.enableStats();

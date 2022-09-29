@@ -9,21 +9,22 @@
     <title>Getting started | phina.js</title>
     <!-- phina.js を読み込む -->
     <script src='http://cdn.rawgit.com/phi-jp/phina.js/v0.2.0/build/phina.js'></script>
-
-    <!-- メイン処理 -->
-    <script src='main.js'>console.log('ok')</script>
   </head>
   <body>
     <script src="blockly-master/blockly_compressed.js"></script>
     <script src="blockly-master/blocks_compressed.js"></script>
     <script src="blockly-master/javascript_compressed.js"></script>
     <script src="blockly-master/msg/js/ja.js"></script>
-    <!-- 自作ブロックの定義 -->
-    <script src="myblock.js"></script>
-    <!-- ワークスペースのエリア -->
+    <!--<script src="test.js"></script>-->
+    <script src="d3.js"></script>
+    <!--<script src="myblock.js"></script>-->
+
+    <!--<canvas 
+      id = "mycanvas" style="height: 50px;width: 50px;">
+    </canvas>-->
+
     <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
     <button onclick="doCode()">コードの実行</button>
-    <!-- ツールボックスの定義 -->
     <xml id="toolbox">
       <block type="go_left"></block>
       <block type="go_right"></block>
