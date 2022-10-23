@@ -19,7 +19,6 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         float x = Input.GetAxisRaw("Horizontal");
-        Debug.Log(x);
         if(x > 0)
         {
             transform.localScale = new Vector3(-1,1,1);
@@ -28,6 +27,7 @@ public class PlayerManager : MonoBehaviour
         {
             transform.localScale = new Vector3(1,1,1);
         }
+
         animator.SetFloat("Speed",Mathf.Abs(x));
         rb.velocity = new Vector2(x*moveSpeed,rb.velocity.y);
     }

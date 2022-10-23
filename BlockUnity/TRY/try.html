@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Step Execution with JS Interpreter</title>
+  <script src="acorn_interpreter.js"></script>
+</head>
+<body>
+    <button onclick="runCode()" id="runButton">Run JavaScript</button>
+    <button onclick="stepCode()" id="stepButton">Step JavaScript</button>
+ <script>
+    var runButton = document.getElementById('runButton');
+    var stepButton = document.getElementById('stepButton');
+    var myInterpreter = null;
+    var myCode = 'var a=1; for(var i=0; i<4; i++ ){a=a*i;};';
+    myInterpreter = new Interpreter(myCode);
+    function stepCode() {
+        if(this.myInterpreter.step()){
+            window.setTimeout(stepCode,0);
+        }
+    }
+    function runCode() {
+        myInterpreter.run();
+    }
+</script>
+</body>
+</html>
