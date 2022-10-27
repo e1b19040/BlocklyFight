@@ -32,7 +32,6 @@
 			<block type="math_number"></block>
 			<block type="math_arithmetic"></block>
 			<block type="text"></block>
-			<block type="text_print"></block>
 		</xml>
 		<canvas id="unity-canvas" class="border border-success" 
 		style="width: 100%; height: 640px; background: #FFFFFF"></canvas>
@@ -55,7 +54,7 @@
 		let target_object;
 		let data_json;
 
-		document.addEventListener('click', function (e) {
+		/*document.addEventListener('click', function (e) {
 			if (e.target.id == "unity-canvas") {
 				// Clicked on canvas 
 				unityInstance.SendMessage("Button", "FocusCanvas", "1");
@@ -63,7 +62,7 @@
 				// Clicked outside of canvas 
 				unityInstance.SendMessage("Button", "FocusCanvas", "0");
 			}
-		});
+		});*/
 	
 		const initFunc = function (interpreter, scope) {
 			let move_left_wrapper = function () {

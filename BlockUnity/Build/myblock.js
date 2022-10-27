@@ -199,7 +199,7 @@ Blockly.Blocks['put_obstacle'] = {
 };
 
 Blockly.JavaScript['move_left'] = function() {
-    let code = 'move_left();\n';
+    let code =  'console.log("左へすすむ");\n';
     return code;
 };
 

@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     public float moveSpeed = 3;
+    public Transform attackPoint;
+    public float attackRadius;
+    public LayerMask enemyLayer;
     Rigidbody2D rb;
     Animator animator;
 
@@ -17,6 +20,31 @@ public class PlayerManager : MonoBehaviour
 
     
     void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Attack();
+        }
+        Movement();
+    }
+
+    void Attack()
+    {
+        animator.SetTrigger("isAttack");
+        Collider2D[] hitEnemys = Physics2D.OverlapCircleAll(attackPoint.position,attackRadius,enemyLayer);
+        foreach(Collider2D hitEnemy in hitEnemys)
+        {
+            Debug.Log(hitEnemy.gameObject.name+"に攻撃");
+            hitEnemy.GetComponent<EnemyManager>().OnDamage();
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position,attackRadius);
+    }
+    void Movement()
     {
         float x = Input.GetAxisRaw("Horizontal");
         if(x > 0)
