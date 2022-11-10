@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    public static PlayerManager instance;
     public float moveSpeed = 3;
     public Transform attackPoint;
     public float attackRadius;
     public LayerMask enemyLayer;
+    private int jumpCount = 0;
+    private float jumpForce = 480f;
     Rigidbody2D rb;
     Animator animator;
 
@@ -18,24 +21,41 @@ public class PlayerManager : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    
     void Update()
     {
+        Movement();
         if(Input.GetKeyDown(KeyCode.Space))
         {
             Attack();
         }
-        Movement();
+        if((Input.GetKeyDown("w") || Input.GetKeyDown("up")) && this.jumpCount<1)
+        {
+            Jump();
+        }
     }
 
-    void Attack()
+    public void Attack()
     {
         animator.SetTrigger("isAttack");
         Collider2D[] hitEnemys = Physics2D.OverlapCircleAll(attackPoint.position,attackRadius,enemyLayer);
         foreach(Collider2D hitEnemy in hitEnemys)
         {
-            Debug.Log(hitEnemy.gameObject.name+"に攻撃");
             hitEnemy.GetComponent<EnemyManager>().OnDamage();
+            hitEnemy.GetComponent<Enemy2ndManager>().OnDamage();
+
+        }
+    }
+
+    public void Jump()
+    {
+        this.rb.AddForce(transform.up * jumpForce);
+        jumpCount++;
+    }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("ground"))
+        {
+            jumpCount = 0;
         }
     }
 

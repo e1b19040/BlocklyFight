@@ -2,22 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BlocklyPlay : MonoBehaviour
 {
-
     void Start()
     {
-
+    
     }
     
     
     void Update()
     {
-        if(Input.GetKey("a")) {
-            Debug.Log("A-String");
-        }
-        if(Input.GetKey(KeyCode.A)) {
-            Debug.Log("A-KeyCode-");
-        }
+    
+    }
+
+    public void MoveLeft()
+    {
+        Debug.Log("moveleft");
+        transform.position -= new Vector3(1,0,0);
+    }
+    public void MoveRight()
+    {
+        Debug.Log("moveright");
+        transform.position += new Vector3(1,0,0);
+    }
+    public void Attack()
+    {
+        Debug.Log("BlockAttack");
+        //PlayerManager.instance.Attack();
     }
 }

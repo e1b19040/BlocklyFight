@@ -1,6 +1,6 @@
 const move_left = {
     "type": "move_left",
-    "message0": "左に進む",
+    "message0": "左に移動",
     "inputsInline": true,
     "previousStatement": null,
     "nextStatement": null,
@@ -11,7 +11,7 @@ const move_left = {
 
 const move_right = {
     "type": "move_right",
-    "message0": "右に進む",
+    "message0": "右に移動",
     "inputsInline": true,
     "previousStatement": null,
     "nextStatement": null,
@@ -20,9 +20,9 @@ const move_right = {
     "helpUrl": ""
 };
 
-const move_forward = {
-    "type": "move_forward",
-    "message0": "前に進む",
+const jump = {
+    "type": "jump",
+    "message0": "ジャンプ",
     "inputsInline": true,
     "previousStatement": null,
     "nextStatement": null,
@@ -31,9 +31,9 @@ const move_forward = {
     "helpUrl": ""
 };
 
-const move_back = {
-    "type": "move_back",
-    "message0": "後ろに下がる",
+const attack = {
+    "type": "attack",
+    "message0": "攻撃",
     "inputsInline": true,
     "previousStatement": null,
     "nextStatement": null,
@@ -132,6 +132,8 @@ const put_obstacle = {
   "helpUrl": ""
 };
 
+
+
 Blockly.Blocks['move_left'] = {
     init: function () {
         this.jsonInit(move_left);
@@ -144,15 +146,15 @@ Blockly.Blocks['move_right'] = {
     }
 };
 
-Blockly.Blocks['move_forward'] = {
+Blockly.Blocks['jump'] = {
     init: function () {
-        this.jsonInit(move_forward);
+        this.jsonInit(jump);
     }
 };
 
-Blockly.Blocks['move_back'] = {
+Blockly.Blocks['attack'] = {
     init: function () {
-        this.jsonInit(move_back);
+        this.jsonInit(attack);
     }
 };
 
@@ -198,25 +200,29 @@ Blockly.Blocks['put_obstacle'] = {
   }
 };
 
+
+
 Blockly.JavaScript['move_left'] = function() {
-    let code =  'console.log("左へすすむ");\n';
+    /*1*/
+    let code =  'moveleft();\n';
     return code;
 };
 
 Blockly.JavaScript['move_right'] = function() {
-    let code = 'move_right();\n';
+    let code = 'moveright();\n';
     return code;
 };
 
-Blockly.JavaScript['move_forward'] = function() {
-    let code = 'move_forward();\n';
+Blockly.JavaScript['jump'] = function() {
+    let code = 'jump();\n';
     return code;
 };
 
-Blockly.JavaScript['move_back'] = function() {;
-    let code = 'move_back();\n';
+Blockly.JavaScript['attack'] = function() {
+    let code = 'attack();\n';
     return code;
-}
+};
+
 
 Blockly.JavaScript['get_left'] = function () {
     var code = '\'left\'';

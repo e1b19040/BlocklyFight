@@ -20,8 +20,9 @@
 		<xml id="toolbox" style="display: none">
 			<block type="move_left"></block>
 			<block type="move_right"></block>
-			<block type="move_forward"></block>
-			<block type="move_back"></block>
+			<block type="jump"></block>
+			<block type="attack"></block>
+
 			<block type="get_left"></block>
 			<block type="get_right"></block>
 			<block type="get_forward"></block>
@@ -31,7 +32,6 @@
 			<block type="controls_repeat_ext"></block>
 			<block type="math_number"></block>
 			<block type="math_arithmetic"></block>
-			<block type="text"></block>
 		</xml>
 		<canvas id="unity-canvas" class="border border-success" 
 		style="width: 100%; height: 640px; background: #FFFFFF"></canvas>
@@ -71,34 +71,35 @@
 			let move_right_wrapper = function () {
 				return move_right_function();
 			};
-			let move_forward_wrapper = function () {
-				return move_forward_function();
+			let jump_wrapper = function () {
+				return jump_function();
 			};
-			let move_back_wrapper = function () {
-				return move_back_function();
+			let attack_wrapper = function () {
+				return attack_function();
 			};
 			let check_wrapper = function (direction, object) {
 				return check_point_function(direction, object);
 			};
-			interpreter.setProperty(scope, 'move_left', interpreter.createNativeFunction(move_left_wrapper));
-			interpreter.setProperty(scope, 'move_right', interpreter.createNativeFunction(move_right_wrapper));
-			interpreter.setProperty(scope, 'move_forward', interpreter.createNativeFunction(move_forward_wrapper));
-			interpreter.setProperty(scope, 'move_back', interpreter.createNativeFunction(move_back_wrapper));
+			interpreter.setProperty(scope, 'moveleft', interpreter.createNativeFunction(move_left_wrapper));/*2*/
+			interpreter.setProperty(scope, 'moveright', interpreter.createNativeFunction(move_right_wrapper));
+			interpreter.setProperty(scope, 'jump', interpreter.createNativeFunction(jump_wrapper));
+			interpreter.setProperty(scope, 'attack', interpreter.createNativeFunction(attack_wrapper));
 			interpreter.setProperty(scope, 'check_point', interpreter.createNativeFunction(check_wrapper));
 		}
 
 		function move_left_function() {
-			unityInstance.SendMessage(target_object, "MoveLeft");
+			unityInstance.SendMessage("Player", "MoveLeft");
 		}
 		function move_right_function() {
-			unityInstance.SendMessage(target_object, "MoveRight");
+			unityInstance.SendMessage("Player", "MoveRight");
 		}
-		function move_forward_function() {
-			unityInstance.SendMessage(target_object, "MoveForward");
+		function jump_function(){
+			unityInstance.SendMessage("Player", "Jump");
 		}
-		function move_back_function() {
-			unityInstance.SendMessage(target_object, "MoveBack");
+		function attack_function(){
+			unityInstance.SendMessage("Player", "attack");
 		}
+
 		function check_point_function(direction, object){			
 			let check_point;
 			let player = data_json.objectData.find(object => object.name == "Sphere");
