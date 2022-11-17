@@ -22,12 +22,13 @@
 			<block type="move_right"></block>
 			<block type="jump"></block>
 			<block type="attack"></block>
+			<block type="check_point"></block>
 
 			<block type="get_left"></block>
 			<block type="get_right"></block>
 			<block type="get_forward"></block>
 			<block type="get_back"></block>
-			<block type="check_point"></block>
+			
 			<block type="controls_if"></block>
 			<block type="controls_repeat_ext"></block>
 			<block type="math_number"></block>
@@ -85,7 +86,9 @@
 			interpreter.setProperty(scope, 'jump', interpreter.createNativeFunction(jump_wrapper));
 			interpreter.setProperty(scope, 'attack', interpreter.createNativeFunction(attack_wrapper));
 			interpreter.setProperty(scope, 'check_point', interpreter.createNativeFunction(check_wrapper));
+	
 		}
+
 
 		function move_left_function() {
 			unityInstance.SendMessage("Player", "MoveLeft");
@@ -97,9 +100,9 @@
 			unityInstance.SendMessage("Player", "Jump");
 		}
 		function attack_function(){
-			unityInstance.SendMessage("Player", "attack");
+			unityInstance.SendMessage("Player", "Attack");
 		}
-
+		
 		function check_point_function(direction, object){			
 			let check_point;
 			let player = data_json.objectData.find(object => object.name == "Sphere");
@@ -109,12 +112,6 @@
 					break;
 				case 'right':
 					check_point = {x: player.direction.z + player.position.x, y: 0, z: -player.direction.x + player.position.z};
-					break;
-				case 'forward':
-					check_point = {x: player.direction.x + player.position.x, y: 0, z: player.direction.z + player.position.z};
-					break;
-				case 'back':
-					check_point = {x: -player.direction.x + player.position.x, y: 0, z: -player.direction.z + player.position.z};
 					break;
 			}
 			if(data_json.objectData.find(object => object.position.x == check_point.x && object.position.z == check_point.z)){
