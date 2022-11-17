@@ -6,7 +6,7 @@ public class Enemy2ndManager : MonoBehaviour
 {
     public static Enemy2ndManager instance;
     public int hp = 5;
-    public int flag = 0;
+    private int flag = 0;
     private float time = 0;
     Animator animator;
     Rigidbody2D rb;

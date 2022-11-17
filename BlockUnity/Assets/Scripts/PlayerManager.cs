@@ -24,9 +24,10 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         Movement();
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetMouseButtonUp(0))
         {
             Attack();
+            Debug.Log("attack");
         }
         if((Input.GetKeyDown("w") || Input.GetKeyDown("up")) && this.jumpCount<1)
         {
@@ -64,7 +65,7 @@ public class PlayerManager : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position,attackRadius);
     }
-    void Movement()
+    public void Movement()
     {
         float x = Input.GetAxisRaw("Horizontal");
         if(x > 0)
