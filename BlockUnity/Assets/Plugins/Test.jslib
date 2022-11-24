@@ -19,4 +19,8 @@ mergeInto(LibraryManager.library, {
   setData: function(data){
 	data_json = JSON.parse(UTF8ToString(data));
   },
+  PlayerData: function(x,y){
+	playerx = parseFloat(x);
+	playery = parseFloat(y);
+  },
 });

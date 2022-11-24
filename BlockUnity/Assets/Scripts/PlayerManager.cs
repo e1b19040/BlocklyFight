@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    [DllImport("__Internal")]
+    private static extern void PlayerData(float x,float y);
     public static PlayerManager instance;
     public float moveSpeed = 3;
     public Transform attackPoint;
@@ -33,6 +36,8 @@ public class PlayerManager : MonoBehaviour
         {
             Jump();
         }
+        //PlayerData(transform.position.x,transform.position.y);
+
     }
 
     public void Attack()

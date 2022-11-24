@@ -21,11 +21,9 @@ public class BlocklyPlay : MonoBehaviour
         if(Input.GetKeyDown("space"))
         {
             Run();
-            Debug.Log("1pass");
         }
         if(flag == 0){
             timeCounter();
-            Debug.Log("counting");
         }
     }
 
@@ -61,6 +59,31 @@ public class BlocklyPlay : MonoBehaviour
     {
         Debug.Log("BlockAttack");
         PlayerManager.instance.Attack();
+    }
+    public void Attackif(){
+        Vector2 plypos = GameObject.Find("Player").transform.position;
+        Vector2 emypos = GameObject.Find("Enemy").transform.position;
+        Debug.Log(plypos);
+        Debug.Log(emypos);
+        Debug.Log(plypos.x); Debug.Log(emypos.x);Debug.Log(plypos.x + 2);
+        
+
+        if(plypos.x < emypos.x){
+            Debug.Log("1"); 
+            PlayerManager.instance.Attack();
+        }else{
+            Debug.Log("73失敗");
+        }
+        if(plypos.x-2 < emypos.x && emypos.x < plypos.x){
+            PlayerManager.instance.Attack();
+            Debug.Log("2"); 
+        }
+    }
+    public double Enemypos()
+    {
+        Vector2 tmp = GameObject.Find("Enemy").transform.position;
+        Debug.Log(tmp); 
+        return tmp.x;
     }
 
     
