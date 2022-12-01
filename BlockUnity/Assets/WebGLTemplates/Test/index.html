@@ -6,10 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>サンプルプロジェクト</title>
 	<link rel="shortcut icon" href="TemplateData/favicon.ico">
-	<script src="https://cdn.jsdelivr.net/npm/blockly@1.0.0/blockly_compressed.min.js"></script> <!-- ライブラリを読み込む -->
-	<script src="https://cdn.jsdelivr.net/npm/blockly@1.0.0/blocks_compressed.min.js"></script> <!-- ライブラリを読み込む -->
-	<script src="https://cdn.jsdelivr.net/npm/blockly@1.0.0/javascript_compressed.min.js"></script> <!-- ライブラリを読み込む -->
-	<script src="https://cdn.jsdelivr.net/npm/blockly@1.0.0/msg/js/ja.min.js"></script> <!-- 日本語化 -->
+	<script src="https://unpkg.com/blockly/blockly.min.js"></script>
 	<script src="acorn_interpreter.js"></script>
 	<script src="myblock.js"></script>
 </head>
@@ -22,13 +19,14 @@
 			<block type="move_right"></block>
 			<block type="jump"></block>
 			<block type="attack"></block>
+			<block type="attackif"></block>
+			<block type="enemypos"></block>
 			<block type="check_point"></block>
-
-			<block type="get_left"></block>
-			<block type="get_right"></block>
-			<block type="get_forward"></block>
-			<block type="get_back"></block>
 			
+			<!--<block type="enemy"></block>-->
+			<block type="get_left"></block>
+			<!--<block type="check_emypos"></block>-->
+
 			<block type="controls_if"></block>
 			<block type="controls_repeat_ext"></block>
 			<block type="math_number"></block>
@@ -51,8 +49,11 @@
 		}).then(x => unityInstance = x);
 	</script>
 	<script>
-		let workspace = Blockly.inject('blocklyDiv', { toolbox: document.getElementById('toolbox') });
+		let workspace = Blockly.inject('blocklyDiv', { toolbox: document.getElementById('toolbox'),
+		maxBlocks:10, maxInstances:{'jump':2}});
 		let target_object;
+		let playerx;
+		let playery;
 		let data_json;
 
 		/*document.addEventListener('click', function (e) {
@@ -81,10 +82,21 @@
 			let check_wrapper = function (direction, object) {
 				return check_point_function(direction, object);
 			};
+			let attackif_wrapper = function () {
+				return attackif_function();
+			};
+			/*let enemypos_wrapper = function () {
+				return enemypos_function();
+			};*/
+			
+
 			interpreter.setProperty(scope, 'moveleft', interpreter.createNativeFunction(move_left_wrapper));/*2*/
 			interpreter.setProperty(scope, 'moveright', interpreter.createNativeFunction(move_right_wrapper));
 			interpreter.setProperty(scope, 'jump', interpreter.createNativeFunction(jump_wrapper));
 			interpreter.setProperty(scope, 'attack', interpreter.createNativeFunction(attack_wrapper));
+			interpreter.setProperty(scope, 'attackif', interpreter.createNativeFunction(attackif_wrapper));
+			//interpreter.setProperty(scope, 'enemypos', interpreter.createNativeFunction(enemypos_wrapper));
+			
 			interpreter.setProperty(scope, 'check_point', interpreter.createNativeFunction(check_wrapper));
 	
 		}
@@ -102,19 +114,26 @@
 		function attack_function(){
 			unityInstance.SendMessage("Player", "Attack");
 		}
+		function attackif_function(){
+			unityInstance.SendMessage("Player", "Attackif");
+		}
+		/*function enemypos_function(){
+			unityInstance.SendMessage("Player", "Enemypos");
+		}*/
 		
+
 		function check_point_function(direction, object){			
 			let check_point;
-			let player = data_json.objectData.find(object => object.name == "Sphere");
 			switch(direction){
 				case 'left':
-					check_point = {x: -player.direction.z + player.position.x, y: 0, z: player.direction.x + player.position.z};
+					check_point = {x:playerx - 1, y:playery};
 					break;
 				case 'right':
-					check_point = {x: player.direction.z + player.position.x, y: 0, z: -player.direction.x + player.position.z};
+					check_point = {x:playerx + 1, y: playery};
 					break;
 			}
-			if(data_json.objectData.find(object => object.position.x == check_point.x && object.position.z == check_point.z)){
+			if(data_json.EnemyData.find(object => object.x == check_point.x || object.y == check_point.y)){
+				console.log("pass1");
 				return true;
 			}else{
 				return false;

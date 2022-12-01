@@ -42,6 +42,27 @@ const attack = {
     "helpUrl": ""
 };
 
+const attackIf = {
+    "type": "attackif",
+    "message0": "敵が近くにいたら攻撃",
+    "inputsInline": true,
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": 230,
+    "tooltip": "",
+    "helpUrl": ""
+};
+
+const enemypos = {
+    "type": "enemypos",
+    "message0": "敵1",
+    "inputsInline": true,
+    "output": "Boolean",
+    "colour": 230,
+    "tooltip": "",
+    "helpUrl": ""
+  };
+
 const get_left = {
     "type": "get_left",
     "message0": "左",
@@ -52,35 +73,27 @@ const get_left = {
     "helpUrl": ""
 }
 
-const get_right = {
-    "type": "get_right",
-    "message0": "右",
+/*const check_emypos = {
+    "type": "check_emypos",
+    "message0": "%1 が近くにいる",
+    "args0": [
+        {
+            "type": "enemypos",
+            "name": "position",
+            "check": "enemypos",
+        },
+        {
+            "type": "input_value",
+            "name": "object",
+            "check": "object",
+        }
+    ],
     "inputsInline": true,
-    "output": "direction",
+    "output": "Boolean",
     "colour": 230,
     "tooltip": "",
     "helpUrl": ""
-}
-
-const get_forward = {
-    "type": "get_forward",
-    "message0": "前",
-    "inputsInline": true,
-    "output": "direction",
-    "colour": 230,
-    "tooltip": "",
-    "helpUrl": ""
-}
-
-const get_back = {
-    "type": "get_back",
-    "message0": "後ろ",
-    "inputsInline": true,
-    "output": "direction",
-    "colour": 230,
-    "tooltip": "",
-    "helpUrl": ""
-}
+}*/
 
 const check_point = {
     "type": "check_point",
@@ -104,9 +117,9 @@ const check_point = {
     "helpUrl": ""
 }
 
-const obstacle = {
-    "type": "obstacle",
-    "message0": "障害物",
+const enemy = {
+    "type": "enemy",
+    "message0": "敵",
     "inputsInline": true,
     "output": "object",
     "colour": 230,
@@ -132,7 +145,7 @@ const put_obstacle = {
   "helpUrl": ""
 };
 
-
+/*************************************/
 
 Blockly.Blocks['move_left'] = {
     init: function () {
@@ -158,29 +171,29 @@ Blockly.Blocks['attack'] = {
     }
 };
 
+Blockly.Blocks['attackif'] = {
+    init: function () {
+        this.jsonInit(attackIf);
+    }
+};
+
+Blockly.Blocks['enemypos'] = {
+    init: function () {
+        this.jsonInit(enemypos);
+    }
+};
+
 Blockly.Blocks['get_left'] = {
     init: function () {
         this.jsonInit(get_left);
     }
 };
 
-Blockly.Blocks['get_right'] = {
+/*Blockly.Blocks['check_emypos'] = {
     init: function () {
-        this.jsonInit(get_right);
+        this.jsonInit(check_emypos);
     }
-};
-
-Blockly.Blocks['get_forward'] = {
-    init: function () {
-        this.jsonInit(get_forward);
-    }
-};
-
-Blockly.Blocks['get_back'] = {
-    init: function () {
-        this.jsonInit(get_back);
-    }
-};
+};*/
 
 Blockly.Blocks['check_point'] = {
     init: function () {
@@ -188,9 +201,9 @@ Blockly.Blocks['check_point'] = {
     }
 };
 
-Blockly.Blocks['obstacle'] = {
+Blockly.Blocks['enemy'] = {
     init: function () {
-        this.jsonInit(obstacle);
+        this.jsonInit(enemy);
     }
 };
 
@@ -200,7 +213,7 @@ Blockly.Blocks['put_obstacle'] = {
   }
 };
 
-
+/************************************* */
 
 Blockly.JavaScript['move_left'] = function() {
     /*1*/
@@ -223,26 +236,32 @@ Blockly.JavaScript['attack'] = function() {
     return code;
 };
 
+Blockly.JavaScript['attackif'] = function() {
+    let code = 'attackif();\n';
+    return code;
+};
+
+Blockly.JavaScript['enemypos'] = function() {
+    let code = 'enemypos();\n';
+    return code;
+};
+
 
 Blockly.JavaScript['get_left'] = function () {
     var code = '\'left\'';
     return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
-Blockly.JavaScript['get_right'] = function () {
-    var code = '\'right\'';
+/*Blockly.JavaScript['check_emypos'] = function (block) {
+    let code;
+    let enemypos = Blockly.JavaScript.valueToCode(block, 'position', Blockly.JavaScript.ORDER_ATOMIC) || null;
+    if (enemypos == null) {
+        code = 'false';
+    } else {
+        code = 'check_enemy(' + enemypos + ')';
+    }
     return [code, Blockly.JavaScript.ORDER_NONE];
-};
-
-Blockly.JavaScript['get_forward'] = function () {
-    var code = '\'forward\'';
-    return [code, Blockly.JavaScript.ORDER_NONE];
-};
-
-Blockly.JavaScript['get_back'] = function () {
-    var code = '\'back\'';
-    return [code, Blockly.JavaScript.ORDER_NONE];
-};
+};*/
 
 Blockly.JavaScript['check_point'] = function (block) {
     let code;
@@ -256,8 +275,8 @@ Blockly.JavaScript['check_point'] = function (block) {
     return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
-Blockly.JavaScript['obstacle'] = function () {
-    let code = '\'障害物\'';
+Blockly.JavaScript['enemy'] = function () {
+    let code = '\'enemy\'';
     return [code, Blockly.JavaScript.ORDER_NONE];
 };
 

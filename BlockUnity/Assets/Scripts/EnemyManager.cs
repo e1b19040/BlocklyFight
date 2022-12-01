@@ -21,7 +21,7 @@ public class EnemyManager : MonoBehaviour
     void Update()
     {
         //EnemyIdle();
-        Movement();
+        //Movement();
         if(flag == 1)
         {
             timeCounter();
