@@ -20,29 +20,28 @@ public class Enemy2ndManager : MonoBehaviour
 
     void Update()
     {
-        EnemyIdle();
+        timeCounter();
+        if(time < 1){
+            animator.SetBool("AttackFlag", true);
+        }else if(1 <= time && time < 2){
+            animator.SetBool("AttackFlag", false);
+        }else if(time >= 2){
+            time = 0;
+        }
     }
-
-    public void Awake()
-    {
+    void timeCounter(){
+        time += Time.deltaTime;
+    }
+    public void Awake(){
         if(instance == null)
         {
             instance = this;
         }
     }
-
-    void EnemyIdle()
-    {
-        rb.velocity = new Vector2(0,0);
-    }
-
-    public void Appear()
-    {
+    public void Appear(){
         gameObject.SetActive(true);
     }
-
-    public void OnDamage()
-    {
+    public void OnDamage(){
         hp -= 1;
         animator.SetTrigger("isHurt");
         /*if(hp <= 0){

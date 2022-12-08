@@ -19,13 +19,9 @@
 			<block type="move_right"></block>
 			<block type="jump"></block>
 			<block type="attack"></block>
-			<block type="attackif"></block>
-			<block type="enemypos"></block>
-			<block type="check_point"></block>
-			
-			<!--<block type="enemy"></block>-->
-			<block type="get_left"></block>
-			<!--<block type="check_emypos"></block>-->
+			<block type="q_down"></block>
+
+			<block type="near_enemy"></block>
 
 			<block type="controls_if"></block>
 			<block type="controls_repeat_ext"></block>
@@ -55,17 +51,11 @@
 		let playerx;
 		let playery;
 		let data_json;
+		let flag =0;
+		let is_inner_range_3 = false;
 
-		/*document.addEventListener('click', function (e) {
-			if (e.target.id == "unity-canvas") {
-				// Clicked on canvas 
-				unityInstance.SendMessage("Button", "FocusCanvas", "1");
-			} else {
-				// Clicked outside of canvas 
-				unityInstance.SendMessage("Button", "FocusCanvas", "0");
-			}
-		});*/
-	
+		document.addEventListener('keydown', test,false);
+
 		const initFunc = function (interpreter, scope) {
 			let move_left_wrapper = function () {
 				return move_left_function();
@@ -79,26 +69,19 @@
 			let attack_wrapper = function () {
 				return attack_function();
 			};
-			let check_wrapper = function (direction, object) {
-				return check_point_function(direction, object);
+			let q_down_wrapper = function () {
+				return Q_down();
 			};
-			let attackif_wrapper = function () {
-				return attackif_function();
+			let near_enemy_wrapper = function () {
+				return inner_range_3();
 			};
-			/*let enemypos_wrapper = function () {
-				return enemypos_function();
-			};*/
-			
 
 			interpreter.setProperty(scope, 'moveleft', interpreter.createNativeFunction(move_left_wrapper));/*2*/
 			interpreter.setProperty(scope, 'moveright', interpreter.createNativeFunction(move_right_wrapper));
 			interpreter.setProperty(scope, 'jump', interpreter.createNativeFunction(jump_wrapper));
 			interpreter.setProperty(scope, 'attack', interpreter.createNativeFunction(attack_wrapper));
-			interpreter.setProperty(scope, 'attackif', interpreter.createNativeFunction(attackif_wrapper));
-			//interpreter.setProperty(scope, 'enemypos', interpreter.createNativeFunction(enemypos_wrapper));
-			
-			interpreter.setProperty(scope, 'check_point', interpreter.createNativeFunction(check_wrapper));
-	
+			interpreter.setProperty(scope, 'q_down', interpreter.createNativeFunction(q_down_wrapper));
+			interpreter.setProperty(scope, 'near_enemy', interpreter.createNativeFunction(near_enemy_wrapper));
 		}
 
 
@@ -114,31 +97,34 @@
 		function attack_function(){
 			unityInstance.SendMessage("Player", "Attack");
 		}
-		function attackif_function(){
-			unityInstance.SendMessage("Player", "Attackif");
+		function q_down_function(){
+			unityInstance.SendMessage("Player", "Q_down");
+			return true;
 		}
-		/*function enemypos_function(){
-			unityInstance.SendMessage("Player", "Enemypos");
-		}*/
-		
-
-		function check_point_function(direction, object){			
-			let check_point;
-			switch(direction){
-				case 'left':
-					check_point = {x:playerx - 1, y:playery};
-					break;
-				case 'right':
-					check_point = {x:playerx + 1, y: playery};
-					break;
+		function test(event){
+			if(event.key === "q" || event.key === "Q") {
+				flag = 1;
 			}
-			if(data_json.EnemyData.find(object => object.x == check_point.x || object.y == check_point.y)){
-				console.log("pass1");
+		}
+		function Q_down(event){
+			if(flag == 1) {
+				flag=0;
 				return true;
-			}else{
-				return false;
 			}
+			flag=0;
 		}
+		function testMessage2(msg){
+			console.log(msg);
+		}
+		function inner_range_3(){
+			unityInstance.SendMessage("Player", "CheckRange3");
+			return is_inner_range_3;
+		}
+
+		window.addEventListener('DOMContentLoaded', function(){
+			setInterval(() => {
+			}, 1000);
+		});
 	</script>
 	
 	<style>

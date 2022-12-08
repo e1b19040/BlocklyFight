@@ -12,6 +12,11 @@ mergeInto(LibraryManager.library, {
 	}
 	stepCode();
   },
+  testMessage:function(flag){
+	//testMessage2(UTF8ToString(msg));
+	console.log(UTF8ToString(flag));
+	is_inner_range_3 = UTF8ToString(flag) == "true";
+  },
   
   setTargetObject: function(obj){
 	target_object = UTF8ToString(obj);
@@ -23,4 +28,6 @@ mergeInto(LibraryManager.library, {
 	playerx = parseFloat(x);
 	playery = parseFloat(y);
   },
+
+
 });
