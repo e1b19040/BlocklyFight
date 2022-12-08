@@ -27,6 +27,7 @@ public class SlimeManager : MonoBehaviour
         }
 
         this.gameObject.transform.Translate (0.001f, 0,0);
+        
     }
 
     void timeCounter(){
