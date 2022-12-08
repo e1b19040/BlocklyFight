@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    [SerializeField] private  SlimeManager slimeManager;
     [DllImport("__Internal")]
     private static extern void PlayerData(float x,float y);
     public static PlayerManager instance;
@@ -16,7 +17,6 @@ public class PlayerManager : MonoBehaviour
     private float jumpForce = 480f;
     Rigidbody2D rb;
     Animator animator;
-
 
     void Start()
     {
@@ -36,7 +36,7 @@ public class PlayerManager : MonoBehaviour
         {
             Jump();
         }
-        //PlayerData(transform.position.x,transform.position.y);
+        TESTSLIME();
 
     }
 
@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
         {
             hitEnemy.GetComponent<EnemyManager>().OnDamage();
             hitEnemy.GetComponent<Enemy2ndManager>().OnDamage();
-
+            hitEnemy.GetComponent<SlimeManager>().OnDamage();
         }
     }
 
@@ -84,5 +84,10 @@ public class PlayerManager : MonoBehaviour
 
         animator.SetFloat("Speed",Mathf.Abs(x));
         rb.velocity = new Vector2(x*moveSpeed,rb.velocity.y);
+    }
+    void TESTSLIME(){
+        if(Input.GetKeyDown("t")){
+            slimeManager.Appear();
+        }
     }
 }
