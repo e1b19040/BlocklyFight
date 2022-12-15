@@ -8,7 +8,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private PlayerManager playerManager;
 
     public float moveSpeed = 3; 
-    public int hp = 5;
+    public int hp = 1;
     public int rnd;
     public int a = 0;
     public int xVector =1;
@@ -36,8 +36,6 @@ public class EnemyManager : MonoBehaviour
 
     void Start()
     {
-        this.gameObject.SetActive (false);
-
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
