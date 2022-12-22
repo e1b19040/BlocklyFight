@@ -5,11 +5,14 @@ using UnityEngine;
 public class Enemy2ndManager : MonoBehaviour
 {
     public static Enemy2ndManager instance;
-    public int hp = 5;
-    private int flag = 0;
+    public int hp = 1;
     private float time = 0;
+    private int TimeCounterFlag = 0;
     Animator animator;
     Rigidbody2D rb;
+
+    private int flag = 0;
+    private int AttackEnable_Flag = 1;
 
     void Start()
     {
@@ -20,8 +23,9 @@ public class Enemy2ndManager : MonoBehaviour
 
     void Update()
     {
-        timeCounter();
-        Attack();
+        if(TimeCounterFlag == 1){
+            timeCounter();
+        }
     }
     void timeCounter(){
         time += Time.deltaTime;
@@ -38,18 +42,19 @@ public class Enemy2ndManager : MonoBehaviour
     public void OnDamage(){
         hp -= 1;
         animator.SetTrigger("isHurt");
-        /*if(hp <= 0){
+        if(hp <= 0){
             Die();
-        }*/
+        }
     }
     public void Attack(){
-        if(time < 1){
-            animator.SetBool("AttackFlag", true);
+        if(AttackEnable_Flag == 1){
+            animator.SetTrigger("AttackTrigger");
             SlimeManager.instance.Appear();
-        }else if(1 <= time && time < 2){
-            animator.SetBool("AttackFlag", false);
-        }else if(time >= 2){
-            //time = 0;
         }
+    }
+    void Die(){
+        hp = 0;
+        AttackEnable_Flag = 0;
+        animator.SetTrigger("DieTrigger");
     }
 }
