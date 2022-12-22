@@ -38,7 +38,7 @@ public class SlimeManager : MonoBehaviour
             gameObject.SetActive (true);
             time = 0;
         }
-        this.gameObject.transform.Translate (dir * 0.005f, 0,0);
+        this.gameObject.transform.Translate (dir * 0.003f, 0,0);
 
     }
 
@@ -50,7 +50,6 @@ public class SlimeManager : MonoBehaviour
         if(hp <= 0){
             Die();
         }
-        Debug.Log("WWW");
     }
     public void Appear(){
         this.gameObject.SetActive(true);
@@ -58,11 +57,10 @@ public class SlimeManager : MonoBehaviour
     }
     void Die(){
         hp = 0;
-        this.gameObject.SetActive (false);
+        this.transform.position = new Vector3(-3.5f, 300.15f, 0);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.name);
         if(collision.gameObject.name == "Tilemap"){
             if(dir == 0){
             dir = 1;
@@ -75,7 +73,17 @@ public class SlimeManager : MonoBehaviour
                 dir = 1;
             }
         }else if(collision.gameObject.name == "Player"){
-            this.gameObject.SetActive (false);
+            this.transform.position = new Vector3(-3.5f, 300.15f, 0);
+        }else if(collision.gameObject.name == "Enemy2nd"){
+            if(dir == 1){
+                dir = -1;
+            }else if(dir == -1){
+                dir = 1;
+            }
         }
+    }
+    void OnBecameInvisible() {
+        this.gameObject.SetActive (false);
+        Enemy2ndManager.instance.Attack();
     }
 }

@@ -153,7 +153,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47781893}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.96, y: 0.16, z: 0}
+  m_LocalPosition: {x: 2.91, y: 0.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -886,7 +886,7 @@ GameObject:
   - component: {fileID: 418532423}
   - component: {fileID: 418532427}
   - component: {fileID: 418532428}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -906,7 +906,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.013540745, y: 0.00000014901161}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -917,7 +917,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.64, y: 0.64}
+  m_Size: {x: 0.9379039, y: 0.6399997}
   m_EdgeRadius: 0
 --- !u!50 &418532424
 Rigidbody2D:
@@ -1329,7 +1329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 906379938}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1344,7 +1344,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906379937}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.41, y: 0.73, z: 0}
+  m_LocalPosition: {x: -0.59, y: 0.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1530,7 +1530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90b40189095a9d45b33c99ab5a93e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 5
+  hp: 1
 --- !u!212 &971563937
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1665,6 +1665,37 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &1045079816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1045079817}
+  m_Layer: 6
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1045079817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045079816}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.47, y: 0.89, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1662515618}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1054705958
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,7 +2018,8 @@ Transform:
   m_LocalPosition: {x: 2.84, y: -0.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1045079817}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2006,7 +2038,7 @@ MonoBehaviour:
   speed: 2
   playerManager: {fileID: 0}
   moveSpeed: 3
-  hp: 1
+  hp: 5
   rnd: 0
   a: 0
   xVector: 1
@@ -2015,6 +2047,11 @@ MonoBehaviour:
   Player: {fileID: 0}
   Enemy: {fileID: 0}
   target: {fileID: 0}
+  AttackPoint: {fileID: 1045079817}
+  attackRadius: 0.2
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &2033346739
 GameObject:
   m_ObjectHideFlags: 0
@@ -2031,7 +2068,7 @@ GameObject:
   - component: {fileID: 2033346746}
   - component: {fileID: 2033346748}
   - component: {fileID: 2033346749}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2160,7 +2197,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.009111702, y: 0.6292291}
+  m_Offset: {x: 0.004598081, y: 0.6292291}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -2171,7 +2208,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6799468, y: 1.1689984}
+  m_Size: {x: 1.0912362, y: 1.1689984}
   m_EdgeRadius: 0
 --- !u!114 &2033346746
 MonoBehaviour:
@@ -2186,7 +2223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slimeManager: {fileID: 0}
-  moveSpeed: 3
+  moveSpeed: 2
   attackPoint: {fileID: 906379938}
   attackRadius: 0.3
   enemyLayer:

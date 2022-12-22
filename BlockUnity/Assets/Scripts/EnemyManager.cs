@@ -8,7 +8,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private PlayerManager playerManager;
 
     public float moveSpeed = 3; 
-    public int hp = 1;
+    public int hp = 2;
     public int rnd;
     public int a = 0;
     public int xVector =1;
@@ -18,6 +18,9 @@ public class EnemyManager : MonoBehaviour
     public GameObject Player;
     public GameObject Enemy;
     public Transform target;
+    public Transform AttackPoint;
+    public float attackRadius;
+    public LayerMask playerLayer;
     private Vector2 PlayerPos;
     private Vector2 EnemyPos;
     private Vector2 position;
@@ -25,10 +28,13 @@ public class EnemyManager : MonoBehaviour
     private int flag = 0;
     private int time2Flag = 0;
     private int moveFlag = 1;
+    private int AttackFlag = 1;
+    private int AttackTimeCounter_flag = 0;
     int moveEnable_flag = 0;
 
     private float time = 0;
     private float time2 = 0;
+    private float attackTime = 0;
     Animator animator;
     Rigidbody2D rb;
 
@@ -51,10 +57,11 @@ public class EnemyManager : MonoBehaviour
         if(time2Flag == 1){
             time2Counter();
         }
+        if(AttackTimeCounter_flag == 1){
+            AttackTimeCounter();
+        }
         ChangeEnemy();
         moveEnemy();
-        
-        
     }
     void timeCounter(){
         time += Time.deltaTime;
@@ -62,14 +69,15 @@ public class EnemyManager : MonoBehaviour
     void time2Counter(){
         time2 += Time.deltaTime;
     }   
+    void AttackTimeCounter(){
+        attackTime += Time.deltaTime;
+    }
     void moveEnemy(){
         time2Counter();
-
-        if(time2 >= 3 && moveEnable_flag == 0){
+        if(time2 >= 1.5 && moveEnable_flag == 0){
             moveEnable_flag = 1;
             time2 = 0;
         }
-
         if(moveEnable_flag == 1){
             if(flag == 0){
                 if(time2 <= 0.2){
@@ -85,22 +93,47 @@ public class EnemyManager : MonoBehaviour
                     animator.SetBool("RunFlag", true);
                     EnemyPos = transform.position;
                     Vector2 targetPos = PlayerPos;
-                    transform.position = Vector2.MoveTowards(EnemyPos, targetPos, 2.0f * Time.deltaTime);
+                    transform.position = Vector2.MoveTowards(EnemyPos, targetPos, 1.5f * Time.deltaTime);
                 }else if (1<time2 && time2<2){
                     animator.SetBool("RunFlag", false);
+                    if(AttackFlag == 1){
+                        //Attack();
+                        AttackFlag = 0;
+                    }
                 }else if(2<=time2){
                     time2 = 0;
+                    AttackFlag = 1;
                 }
             }
         }
     
         
     }
+    void Attack(){
+        animator.SetTrigger("Attack");
+        Collider2D[] hitEnemys = Physics2D.OverlapCircleAll(AttackPoint.position,attackRadius,playerLayer);
+        foreach(Collider2D hitEnemy in hitEnemys)
+        {
+            hitEnemy.GetComponent<PlayerManager>().onDamage();
+        }
+    }
+    private void OnDrawGizmosSelected(){
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(AttackPoint.position,attackRadius);
+    }
     public void OnDamage(){
         hp -= 1;
         animator.SetTrigger("isHurt");
         if(hp <= 0){
             Die();
+        }
+        
+        AttackTimeCounter_flag = 1;
+        if(attackTime >= 0.5){
+            Attack();  
+            AttackTimeCounter_flag = 0;
+            attackTime = 0;
+            Debug.Log("enemy 136");
         }
     }
     void Die(){
@@ -112,6 +145,7 @@ public class EnemyManager : MonoBehaviour
          if(time >= 3){
             this.gameObject.SetActive (false);
             Enemy2ndManager.instance.Appear();
+            Enemy2ndManager.instance.Attack();
         }
     }
 

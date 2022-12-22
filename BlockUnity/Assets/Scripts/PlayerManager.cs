@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void PlayerData(float x,float y);
     public static PlayerManager instance;
-    public float moveSpeed = 3;
+    public float moveSpeed = 2;
     private int hp = 3;
     public Transform attackPoint;
     public float attackRadius;
@@ -56,9 +56,13 @@ public class PlayerManager : MonoBehaviour
         Collider2D[] hitEnemys = Physics2D.OverlapCircleAll(attackPoint.position,attackRadius,enemyLayer);
         foreach(Collider2D hitEnemy in hitEnemys)
         {
-            hitEnemy.GetComponent<EnemyManager>().OnDamage();
-            hitEnemy.GetComponent<Enemy2ndManager>().OnDamage();
-            hitEnemy.GetComponent<SlimeManager>().OnDamage();
+            if(hitEnemy.gameObject.name == "Enemy"){
+                hitEnemy.GetComponent<EnemyManager>().OnDamage();
+            }else if(hitEnemy.gameObject.name == "slime"){
+                hitEnemy.GetComponent<SlimeManager>().OnDamage();
+            }else if(hitEnemy.gameObject.name == "Enemy2nd"){
+                hitEnemy.GetComponent<Enemy2ndManager>().OnDamage();
+            }
         }
     }
 
@@ -97,7 +101,7 @@ public class PlayerManager : MonoBehaviour
         animator.SetFloat("Speed",Mathf.Abs(x));
         rb.velocity = new Vector2(x*moveSpeed,rb.velocity.y);
     }
-    void onDamage(){
+    public void onDamage(){
         animator.SetTrigger("OnDamage");
         hp -= 1;
         if(hp <= 0){
