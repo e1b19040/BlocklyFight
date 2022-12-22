@@ -10,33 +10,43 @@ public class PlayerManager : MonoBehaviour
     private static extern void PlayerData(float x,float y);
     public static PlayerManager instance;
     public float moveSpeed = 3;
+    private int hp = 3;
     public Transform attackPoint;
     public float attackRadius;
     public LayerMask enemyLayer;
     private int jumpCount = 0;
+    private int moveEnable_flag = 1;
     private float jumpForce = 480f;
     Rigidbody2D rb;
     Animator animator;
+
+    public GameObject slime;
+    public GameObject slime2;
+    public GameObject slime3;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        slimeManager.Appear();
     }
 
     void Update()
     {
-        Movement();
-        if(Input.GetMouseButtonUp(0))
-        {
-            Attack();
-            Debug.Log("attack");
+        if(moveEnable_flag == 1){
+            Movement();
+            if(Input.GetMouseButtonUp(0)){
+                Attack();
+                Debug.Log("attack");
+            }
+            if((Input.GetKeyDown("w") || Input.GetKeyDown("up")) && this.jumpCount<1){
+                Jump();
+            }
         }
-        if((Input.GetKeyDown("w") || Input.GetKeyDown("up")) && this.jumpCount<1)
-        {
-            Jump();
+        if(hp == 0){
+            Die();
         }
-        TESTSLIME();
+
 
     }
 
@@ -57,14 +67,16 @@ public class PlayerManager : MonoBehaviour
         this.rb.AddForce(transform.up * jumpForce);
         jumpCount++;
     }
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionEnter2D(Collision2D other) //衝突時
     {
         if (other.gameObject.CompareTag("ground"))
         {
             jumpCount = 0;
         }
+        if(other.gameObject.name == "slime"){
+            onDamage();
+        }
     }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -85,9 +97,16 @@ public class PlayerManager : MonoBehaviour
         animator.SetFloat("Speed",Mathf.Abs(x));
         rb.velocity = new Vector2(x*moveSpeed,rb.velocity.y);
     }
-    void TESTSLIME(){
-        if(Input.GetKeyDown("t")){
-            slimeManager.Appear();
+    void onDamage(){
+        animator.SetTrigger("OnDamage");
+        hp -= 1;
+        if(hp <= 0){
+            Die();
         }
     }
+    void Die(){
+        hp = 0;
+        moveEnable_flag = 0;
+        animator.SetTrigger("Die");
+    } 
 }

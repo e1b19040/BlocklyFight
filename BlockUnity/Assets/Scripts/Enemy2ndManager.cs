@@ -21,13 +21,7 @@ public class Enemy2ndManager : MonoBehaviour
     void Update()
     {
         timeCounter();
-        if(time < 1){
-            animator.SetBool("AttackFlag", true);
-        }else if(1 <= time && time < 2){
-            animator.SetBool("AttackFlag", false);
-        }else if(time >= 2){
-            time = 0;
-        }
+        Attack();
     }
     void timeCounter(){
         time += Time.deltaTime;
@@ -47,5 +41,15 @@ public class Enemy2ndManager : MonoBehaviour
         /*if(hp <= 0){
             Die();
         }*/
+    }
+    public void Attack(){
+        if(time < 1){
+            animator.SetBool("AttackFlag", true);
+            SlimeManager.instance.Appear();
+        }else if(1 <= time && time < 2){
+            animator.SetBool("AttackFlag", false);
+        }else if(time >= 2){
+            //time = 0;
+        }
     }
 }
