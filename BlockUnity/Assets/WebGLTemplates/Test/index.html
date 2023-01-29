@@ -17,9 +17,13 @@
 		<xml id="toolbox" style="display: none">
 			<block type="move_left"></block>
 			<block type="move_right"></block>
+			<block type="turn_right"></block>
+			<block type="turn_left"></block>
 			<block type="jump"></block>
 			<block type="attack"></block>
 			<block type="q_down"></block>
+			<block type="e_down"></block>
+			<block type="r_down"></block>
 
 			<block type="near_enemy"></block>
 
@@ -27,6 +31,7 @@
 			<block type="controls_repeat_ext"></block>
 			<block type="math_number"></block>
 			<block type="math_arithmetic"></block>
+			<button text = "test" callbackKey="testKey"></button>
 		</xml>
 		<canvas id="unity-canvas" class="border border-success" 
 		style="width: 100%; height: 640px; background: #FFFFFF"></canvas>
@@ -34,6 +39,7 @@
 	<script src="Build/Build.loader.js"></script>
 	<script>
 		var unityInstance = null;
+		
 		createUnityInstance(document.querySelector("#unity-canvas"), {
 		dataUrl: "Build/Build.data",
 		frameworkUrl: "Build/Build.framework.js",
@@ -46,15 +52,23 @@
 	</script>
 	<script>
 		let workspace = Blockly.inject('blocklyDiv', { toolbox: document.getElementById('toolbox'),
-		maxBlocks:10, maxInstances:{'jump':2}});
+		maxInstances:{'q_down':1,'e_down':1,'r_down':1}});
+		workspace.registerButtonCallback("testKey",testblock);
+		//let xml = Blockly.Xml.domToWorkspace(document.getElementById('controls_if'), workspace);
+		//let myBlockXml = Blockly.Xml.domToText(xml);
 		let target_object;
 		let playerx;
 		let playery;
 		let data_json;
 		let flag =0;
 		let is_inner_range_3 = false;
+		let blockData;
+		let blockNum = [3];
+
 
 		document.addEventListener('keydown', test,false);
+		document.addEventListener('keydown', eDown,false);
+		document.addEventListener('keydown', rDown,false);
 
 		const initFunc = function (interpreter, scope) {
 			let move_left_wrapper = function () {
@@ -62,6 +76,12 @@
 			}; 
 			let move_right_wrapper = function () {
 				return move_right_function();
+			};
+			let turn_right_wrapper = function () {
+				return turn_right_function();
+			};
+			let turn_left_wrapper = function () {
+				return turn_left_function();
 			};
 			let jump_wrapper = function () {
 				return jump_function();
@@ -72,15 +92,25 @@
 			let q_down_wrapper = function () {
 				return Q_down();
 			};
+			let e_down_wrapper = function () {
+				return E_down();
+			};
+			let r_down_wrapper = function () {
+				return R_down();
+			};
 			let near_enemy_wrapper = function () {
 				return inner_range_3();
 			};
 
 			interpreter.setProperty(scope, 'moveleft', interpreter.createNativeFunction(move_left_wrapper));/*2*/
 			interpreter.setProperty(scope, 'moveright', interpreter.createNativeFunction(move_right_wrapper));
+			interpreter.setProperty(scope, 'turnleft', interpreter.createNativeFunction(turn_left_wrapper));
+			interpreter.setProperty(scope, 'turnright', interpreter.createNativeFunction(turn_right_wrapper));
 			interpreter.setProperty(scope, 'jump', interpreter.createNativeFunction(jump_wrapper));
 			interpreter.setProperty(scope, 'attack', interpreter.createNativeFunction(attack_wrapper));
 			interpreter.setProperty(scope, 'q_down', interpreter.createNativeFunction(q_down_wrapper));
+			interpreter.setProperty(scope, 'e_down', interpreter.createNativeFunction(e_down_wrapper));
+			interpreter.setProperty(scope, 'r_down', interpreter.createNativeFunction(r_down_wrapper));
 			interpreter.setProperty(scope, 'near_enemy', interpreter.createNativeFunction(near_enemy_wrapper));
 		}
 
@@ -90,6 +120,12 @@
 		}
 		function move_right_function() {
 			unityInstance.SendMessage("Player", "MoveRight");
+		}
+		function turn_right_function() {
+			unityInstance.SendMessage("Player", "turnRight");
+		}
+		function turn_left_function() {
+			unityInstance.SendMessage("Player", "turnLeft");
 		}
 		function jump_function(){
 			unityInstance.SendMessage("Player", "Jump");
@@ -101,9 +137,27 @@
 			unityInstance.SendMessage("Player", "Q_down");
 			return true;
 		}
+		function e_down_function(){
+			unityInstance.SendMessage("Player", "E_down");
+			return true;
+		}
+		function r_down_function(){
+			unityInstance.SendMessage("Player", "R_down");
+			return true;
+		}
 		function test(event){
 			if(event.key === "q" || event.key === "Q") {
 				flag = 1;
+			}
+		}
+		function eDown(event){
+			if(event.key === "e" || event.key === "E") {
+				Eflag = 1;
+			}
+		}
+		function rDown(event){
+			if(event.key === "r" || event.key === "R") {
+				Rflag = 1;
 			}
 		}
 		function Q_down(event){
@@ -112,6 +166,20 @@
 				return true;
 			}
 			flag=0;
+		}
+		function E_down(event){
+			if(Eflag == 1) {
+				Eflag=0;
+				return true;
+			}
+			Eflag=0;
+		}
+		function R_down(event){
+			if(Rflag == 1) {
+				Rflag=0;
+				return true;
+			}
+			Rflag=0;
 		}
 		function testMessage2(msg){
 			console.log(msg);
@@ -125,13 +193,66 @@
 			setInterval(() => {
 			}, 1000);
 		});
+
+		function testblock(){
+			//let xml = Blockly.Xml.domToWorkspace(document.getElementById('controls_if'), workspace);
+			let myBlockXml = Blockly.Xml.workspaceToDom(workspace).innerHTML;
+			let DoFlag = 0;
+			console.log(myBlockXml);
+			const statementData = myBlockXml.match(/<statement.*?statement>/g);
+			//console.log(statementData[0].toString());
+			//console.log(statementData[1].toString());
+			for(let i=0; i < statementData.length; i++){
+				const blockData = statementData[i].toString().match(/block/g);
+				console.log(blockData.length);
+				if((blockData.length / 2) >= 5){
+					DoFlag = 1;
+				}else{
+					DoFlag = 0;
+				}
+			}
+
+			unityInstance.SendMessage("Player", "CheckBlock");
+			
+		}
+
+		function onchange(event) {
+			if(event.type == Blockly.Events.BLOCK_MOVE){
+				let myBlockXml = Blockly.Xml.workspaceToDom(workspace).innerHTML;
+				let DoFlag = 1;
+				if(myBlockXml.match(/<statement.*?statement>/g) == undefined){
+					unityInstance.SendMessage("Player", "CheckBlock",DoFlag);
+					console.log("index217");
+					return;
+				}
+				const statementData = myBlockXml.match(/<statement.*?statement>/g);
+
+				for(let i=0; i < statementData.length; i++){
+					const blockData = statementData[i].toString().match(/block/g);
+					console.log(blockData.length);
+					if((blockData.length / 2) >= 5){
+						DoFlag = 1;
+					}else{
+						DoFlag = 0;
+					}
+				}
+				console.log(DoFlag);
+				unityInstance.SendMessage("Player", "CheckBlock",DoFlag);
+				/*if(DoFlag == 1){
+					unityInstance.SendMessage("Player", "CheckBlock");
+				}else if(DoFlag == 0){
+					unityInstance.SendMessage("Player", "CheckBlock");
+				}*/
+			}
+			
+		}
+		workspace.addChangeListener(onchange);
 	</script>
 	
 	<style>
 		.flex {
 			display: block;
 		}
-
 	</style>
 </body>
 </html>

@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Enemy2ndManager : MonoBehaviour
 {
+    [SerializeField] private DragonManager dragonManager;
     public static Enemy2ndManager instance;
     public int hp = 1;
     private float time = 0;
+    private float time2 = 0;
     private int TimeCounterFlag = 0;
     Animator animator;
     Rigidbody2D rb;
 
     private int flag = 0;
     private int AttackEnable_Flag = 1;
+    private int deth_flag = 0;
 
     void Start()
     {
@@ -26,9 +29,17 @@ public class Enemy2ndManager : MonoBehaviour
         if(TimeCounterFlag == 1){
             timeCounter();
         }
+        if(deth_flag == 1){
+            time2Counter();
+        }
+        ChangeEnemy();
     }
+
     void timeCounter(){
         time += Time.deltaTime;
+    }
+    void time2Counter(){
+        time2 += Time.deltaTime;
     }
     public void Awake(){
         if(instance == null)
@@ -52,9 +63,16 @@ public class Enemy2ndManager : MonoBehaviour
             SlimeManager.instance.Appear();
         }
     }
-    void Die(){
+    public void Die(){
         hp = 0;
         AttackEnable_Flag = 0;
         animator.SetTrigger("DieTrigger");
+        deth_flag = 1;
+    }
+    void ChangeEnemy(){
+        if(time2 >= 0.5){
+            this.gameObject.SetActive (false);
+            DragonManager.instance.Appear();
+        }
     }
 }

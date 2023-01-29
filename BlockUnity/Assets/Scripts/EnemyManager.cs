@@ -8,7 +8,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private PlayerManager playerManager;
 
     public float moveSpeed = 3; 
-    public int hp = 2;
+    public int hp = 1;
     public int rnd;
     public int a = 0;
     public int xVector =1;
@@ -60,8 +60,8 @@ public class EnemyManager : MonoBehaviour
         if(AttackTimeCounter_flag == 1){
             AttackTimeCounter();
         }
-        ChangeEnemy();
         moveEnemy();
+        ChangeEnemy();
     }
     void timeCounter(){
         time += Time.deltaTime;
@@ -80,7 +80,7 @@ public class EnemyManager : MonoBehaviour
         }
         if(moveEnable_flag == 1){
             if(flag == 0){
-                if(time2 <= 0.2){
+                if(time2 <= 3){
                     PlayerPos = GameObject.Find("Player").transform.position;
                     EnemyPos =GameObject.Find("Enemy").transform.position;
                     if(PlayerPos.x < EnemyPos.x){
@@ -89,15 +89,15 @@ public class EnemyManager : MonoBehaviour
                     if(EnemyPos.x < PlayerPos.x){
                         transform.localScale = new Vector3(-1,1,1);
                     }
-                }else if(0.2 < time2 && time2<1){
+                }else if(3 < time2 && time2<4){
                     animator.SetBool("RunFlag", true);
                     EnemyPos = transform.position;
                     Vector2 targetPos = PlayerPos;
-                    transform.position = Vector2.MoveTowards(EnemyPos, targetPos, 1.5f * Time.deltaTime);
-                }else if (1<time2 && time2<2){
+                    transform.position = Vector2.MoveTowards(EnemyPos, targetPos, 1.0f * Time.deltaTime);
+                }else if (4<time2 && time2<5){
                     animator.SetBool("RunFlag", false);
                     if(AttackFlag == 1){
-                        //Attack();
+                        Attack();
                         AttackFlag = 0;
                     }
                 }else if(2<=time2){
@@ -128,7 +128,7 @@ public class EnemyManager : MonoBehaviour
             Die();
         }
         
-        AttackTimeCounter_flag = 1;
+        //AttackTimeCounter_flag = 1;
         if(attackTime >= 0.5){
             Attack();  
             AttackTimeCounter_flag = 0;
@@ -142,7 +142,7 @@ public class EnemyManager : MonoBehaviour
         animator.SetTrigger("Die");
     } 
     void ChangeEnemy(){
-         if(time >= 3){
+        if(time >= 0.5){
             this.gameObject.SetActive (false);
             Enemy2ndManager.instance.Appear();
             Enemy2ndManager.instance.Attack();

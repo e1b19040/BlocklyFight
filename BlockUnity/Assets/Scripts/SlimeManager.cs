@@ -16,6 +16,7 @@ public class SlimeManager : MonoBehaviour
     private int hp = 1;
     private float time = 0;
     private int dir = 0;
+    private int moveFlag = 1;
 
     public void Awake()
     {
@@ -38,12 +39,21 @@ public class SlimeManager : MonoBehaviour
             gameObject.SetActive (true);
             time = 0;
         }
-        this.gameObject.transform.Translate (dir * 0.003f, 0,0);
+        if(moveFlag == 1){
+            this.gameObject.transform.Translate (dir * 0.005f, 0,0);
+        }
+        
 
     }
 
     void timeCounter(){
         time += Time.deltaTime;
+    }
+    public void MoveEnable(){
+        moveFlag = 1;
+    }
+    public void Moveimp(){
+        moveFlag = 0;
     }
     public void OnDamage(){
         hp -= 1;

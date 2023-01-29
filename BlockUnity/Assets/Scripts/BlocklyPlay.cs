@@ -6,11 +6,14 @@ using UnityEngine.UI;
 
 public class BlocklyPlay : MonoBehaviour
 {
+    public static BlocklyPlay instance;
+
     [DllImport("__Internal")]
     private static extern void doCode();
     [DllImport("__Internal")]
     private static extern void testMessage(string flag);
     private int flag = 1;
+    private bool DoFlag = false;
     private int BlockOnOff = 0;
     private int testflag = 1;
 
@@ -36,16 +39,41 @@ public class BlocklyPlay : MonoBehaviour
         }*/
 
         if(Input.GetKeyDown("space")){
-            doCode();
+             Debug.Log(DoFlag);
         }
-        if(Input.GetKey("space")){
-            Invoke(nameof(DoCode), 0.5f);
+        /*if(Input.GetKeyDown("space") && DoFlag){
+            doCode();
+        }*/
+        if(Input.GetKeyDown("space")  && DoFlag ){
+            //Invoke(nameof(DoCode), 0.5f);
+            doCode();
+            Debug.Log("BlocklyPlay50");
+        }
+    }
+
+    public void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
         }
     }
 
     void DoCode(){
         if(Input.GetKey("space")){
+            Debug.Log("blocklyplay59");
             doCode();
+            Debug.Log("blocklyplay61");
+            Debug.Log(DoFlag);
+        }
+    }
+
+    public void CheckBlock(int doFlag){
+        if(doFlag == 1){
+            DoFlag = true;
+        }else{
+            DoFlag = false;
+            Debug.Log("blocklyplay68");
         }
     }
 
@@ -69,13 +97,19 @@ public class BlocklyPlay : MonoBehaviour
 
     public void MoveLeft()
     {
-        Debug.Log("moveleft");
-        transform.position -= new Vector3(1,0,0);
+        transform.localScale = new Vector3(1,1,1);
+        transform.position -= new Vector3(2,0,0);
     }
     public void MoveRight()
     {
-        Debug.Log("moveright");
-        transform.position += new Vector3(1,0,0);
+        transform.localScale = new Vector3(-1,1,1);
+        transform.position += new Vector3(2,0,0);
+    }
+    public void turnLeft(){
+        transform.localScale = new Vector3(1,1,1);
+    }
+    public void turnRight(){
+        transform.localScale = new Vector3(-1,1,1);
     }
     public void Attack()
     {

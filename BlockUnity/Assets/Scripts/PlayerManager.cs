@@ -10,13 +10,13 @@ public class PlayerManager : MonoBehaviour
     private static extern void PlayerData(float x,float y);
     public static PlayerManager instance;
     public float moveSpeed = 2;
-    private int hp = 3;
+    private int hp = 5;
     public Transform attackPoint;
     public float attackRadius;
     public LayerMask enemyLayer;
     private int jumpCount = 0;
     private int moveEnable_flag = 1;
-    private float jumpForce = 480f;
+    private float jumpForce = 650f;
     Rigidbody2D rb;
     Animator animator;
 
@@ -34,13 +34,12 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         if(moveEnable_flag == 1){
-            Movement();
+            //Movement();
             if(Input.GetMouseButtonUp(0)){
-                Attack();
-                Debug.Log("attack");
+                //Attack();
             }
             if((Input.GetKeyDown("w") || Input.GetKeyDown("up")) && this.jumpCount<1){
-                Jump();
+                //Jump();
             }
         }
         if(hp == 0){
@@ -62,6 +61,8 @@ public class PlayerManager : MonoBehaviour
                 hitEnemy.GetComponent<SlimeManager>().OnDamage();
             }else if(hitEnemy.gameObject.name == "Enemy2nd"){
                 hitEnemy.GetComponent<Enemy2ndManager>().OnDamage();
+            }else if(hitEnemy.gameObject.name == "Dragon"){
+                hitEnemy.GetComponent<DragonManager>().OnDamage();
             }
         }
     }
