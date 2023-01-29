@@ -18,6 +18,26 @@ const move_right = {
     "tooltip": "",
     "helpUrl": ""
 };
+const turn_right = {
+    "type": "turn_right",
+    "message0": "右を向く",
+    "inputsInline": true,
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": 230,
+    "tooltip": "",
+    "helpUrl": ""
+};
+const turn_left = {
+    "type": "turn_left",
+    "message0": "左を向く",
+    "inputsInline": true,
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": 230,
+    "tooltip": "",
+    "helpUrl": ""
+};
 const jump = {
     "type": "jump",
     "message0": "ジャンプ",
@@ -47,6 +67,24 @@ const q_down = {
     "tooltip": "",
     "helpUrl": ""
 }
+const e_down = {
+    "type": "e_down",
+    "message0": "Eを押す",
+    "inputsInline": true,
+    "output": "Boolean",
+    "colour": 230,
+    "tooltip": "",
+    "helpUrl": ""
+}
+const r_down = {
+    "type": "r_down",
+    "message0": "Rを押す",
+    "inputsInline": true,
+    "output": "Boolean",
+    "colour": 230,
+    "tooltip": "",
+    "helpUrl": ""
+}
 const near_enemy = {
     "type": "near_enemy",
     "message0": "敵が近くにいる",
@@ -68,6 +106,16 @@ Blockly.Blocks['move_right'] = {
         this.jsonInit(move_right);
     }
 };
+Blockly.Blocks['turn_right'] = {
+    init: function () {
+        this.jsonInit(turn_right);
+    }
+};
+Blockly.Blocks['turn_left'] = {
+    init: function () {
+        this.jsonInit(turn_left);
+    }
+};
 Blockly.Blocks['jump'] = {
     init: function () {
         this.jsonInit(jump);
@@ -81,6 +129,16 @@ Blockly.Blocks['attack'] = {
 Blockly.Blocks['q_down'] = {
     init: function () {
         this.jsonInit(q_down);
+    }
+};
+Blockly.Blocks['e_down'] = {
+    init: function () {
+        this.jsonInit(e_down);
+    }
+};
+Blockly.Blocks['r_down'] = {
+    init: function () {
+        this.jsonInit(r_down);
     }
 };
 Blockly.Blocks['near_enemy'] = {
@@ -98,6 +156,14 @@ Blockly.JavaScript['move_right'] = function() {
     let code = 'moveright();\n';
     return code;
 };
+Blockly.JavaScript['turn_right'] = function() {
+    let code = 'turnright();\n';
+    return code;
+};
+Blockly.JavaScript['turn_left'] = function() {
+    let code = 'turnleft();\n';
+    return code;
+};
 Blockly.JavaScript['jump'] = function() {
     let code = 'jump();\n';
     return code;
@@ -108,6 +174,14 @@ Blockly.JavaScript['attack'] = function() {
 };
 Blockly.JavaScript['q_down'] = function() {
     let code = 'q_down()';
+    return [code, Blockly.JavaScript.ORDER_NONE];
+};
+Blockly.JavaScript['e_down'] = function() {
+    let code = 'e_down()';
+    return [code, Blockly.JavaScript.ORDER_NONE];
+};
+Blockly.JavaScript['r_down'] = function() {
+    let code = 'r_down()';
     return [code, Blockly.JavaScript.ORDER_NONE];
 };
 Blockly.JavaScript['near_enemy'] = function() {
