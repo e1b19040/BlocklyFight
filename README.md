@@ -24,3 +24,7 @@ Buildファイルが作成されたことを確認する．
 ![netlify4](https://user-images.githubusercontent.com/72331009/219350459-ffb3bdde-c175-4ad6-942a-a31173898e88.png)
 サイトタブに戻りDeployしたものを選択，リンクが表示されていれば公開できている．
 ![netlify5](https://user-images.githubusercontent.com/72331009/219351033-1155c5eb-def6-438a-9a94-49e2bc50fa0e.png)
+
+
+## 遊び方
+### 概要
