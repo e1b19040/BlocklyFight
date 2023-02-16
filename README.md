@@ -7,3 +7,4 @@ Unityhubを開けることを確認する．
 
 次に[本ソフト](https://github.com/e1b19040/BlocklyFight)をGithubからダウンロードする．
 ![github](https://user-images.githubusercontent.com/72331009/219327134-b84b14bb-bdf2-4d79-8b01-2221e97194ec.png)
+ダウンロードしたものをUnityhubから開く．
