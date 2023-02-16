@@ -18,3 +18,9 @@ Buildファイルが作成されたことを確認する．
 このBuildファイルをNetlifyで公開する．
 [Netlify](https://www.netlify.com/)からGitHubでログインする．
 ![netlify](https://user-images.githubusercontent.com/72331009/219346995-e8b8a20e-c952-40ee-bd78-589d18b1a18f.png)
+ログイン後，Sitesタブに移動しAdd new siteをクリック，Import an existing projectでGitHubを選択する．
+![netlify3](https://user-images.githubusercontent.com/72331009/219349969-0c9d89d4-4851-4cad-872d-7d7ae3a85729.png)
+先ほどのBuildファイルのあるリポジトリを選択しDeployする．
+![netlify4](https://user-images.githubusercontent.com/72331009/219350459-ffb3bdde-c175-4ad6-942a-a31173898e88.png)
+サイトタブに戻りDeployしたものを選択，リンクが表示されていれば公開できている．
+![netlify5](https://user-images.githubusercontent.com/72331009/219351033-1155c5eb-def6-438a-9a94-49e2bc50fa0e.png)
